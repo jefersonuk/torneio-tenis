@@ -47,11 +47,24 @@
   }
 
   /**
+   * Normaliza a semente para que a auditoria não dependa de digitação exata:
+   * espaços extras, maiúsculas e acentos não podem mudar o resultado.
+   */
+  function normalizar(texto) {
+    return String(texto)
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  /**
    * Distribui os jogadores sorteáveis entre os grupos, alternando A/B para
    * manter os grupos equilibrados independentemente da quantidade.
    */
   function sortearGrupos(cabecas, sorteaveis, sementeTexto) {
-    const gerar = semente32(String(sementeTexto));
+    const gerar = semente32(normalizar(sementeTexto));
     const rand = prng(gerar());
     const ordem = embaralhar(sorteaveis, rand);
 
