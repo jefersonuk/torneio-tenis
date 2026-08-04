@@ -157,6 +157,12 @@ footer {
   font: inherit;
 }
 
+.acoes-copiar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
 .badge {
   font-size: 0.8rem;
   padding: 0.25rem 0.55rem;

@@ -33,7 +33,8 @@ Qualquer pessoa que digite a mesma semente na página obtém **exatamente a mesm
 divisão de grupos**. Isso permite conferir o sorteio depois, sem precisar confiar em
 quem clicou no botão.
 
-Para gerar as linhas da planilha a partir da mesma semente:
+Depois de sortear, a página mostra dois botões que copiam as linhas prontas para
+colar nas abas `Grupos` e `Jogos` da planilha. Quem preferir o terminal:
 
 ```bash
 node scripts/gerar-planilha.mjs "04/08/2026 + Mega-Sena 2801"

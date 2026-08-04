@@ -254,27 +254,61 @@
     }
 
     const salvo = gruposSalvos();
-    if (salvo) {
-      alvo.appendChild(
-        el('p', { class: 'nota', text: 'Semente do último sorteio: "' + salvo.semente + '"' })
-      );
-      alvo.appendChild(botaoCopiarGrupos(salvo.grupos));
-    }
+    if (!salvo) return;
+
+    alvo.appendChild(
+      el('p', { class: 'nota', text: 'Semente do último sorteio: "' + salvo.semente + '"' })
+    );
+    alvo.appendChild(
+      el('p', {
+        class: 'nota',
+        text: 'Copie os dois blocos abaixo e cole nas abas correspondentes da planilha:',
+      })
+    );
+
+    const acoes = el('div', { class: 'acoes-copiar' });
+    acoes.appendChild(botaoCopiar('1. Copiar para a aba Grupos', linhasGrupos(salvo.grupos)));
+    acoes.appendChild(botaoCopiar('2. Copiar para a aba Jogos', linhasJogos(salvo.grupos)));
+    alvo.appendChild(acoes);
   }
 
-  function botaoCopiarGrupos(grupos) {
-    const btn = el('button', { class: 'btn btn-secundario', text: 'Copiar linhas para a aba Grupos' });
-    btn.addEventListener('click', function () {
-      const linhas = ['jogador\tgrupo'];
-      ['A', 'B'].forEach(function (g) {
-        grupos[g].forEach(function (n) {
-          linhas.push(n + '\t' + g);
+  /** Cada bloco é TSV: colar no Sheets já cai em colunas separadas. */
+  function linhasGrupos(grupos) {
+    const linhas = ['jogador\tgrupo'];
+    ['A', 'B'].forEach(function (g) {
+      grupos[g].forEach(function (n) {
+        linhas.push(n + '\t' + g);
+      });
+    });
+    return linhas.join('\n');
+  }
+
+  function linhasJogos(grupos) {
+    const linhas = ['fase\tid\tgrupo\tjogador_a\tjogador_b\tplacar\tdata'];
+
+    ['A', 'B'].forEach(function (g) {
+      window.Sorteio.rodadasRoundRobin(grupos[g]).forEach(function (rodada, i) {
+        rodada.forEach(function (par) {
+          linhas.push(['grupo', 'G' + g + '-R' + (i + 1), g, par[0], par[1], '', ''].join('\t'));
         });
       });
-      navigator.clipboard.writeText(linhas.join('\n')).then(function () {
-        btn.textContent = 'Copiado! Cole na planilha';
+    });
+
+    [['quartas', 'QF1'], ['quartas', 'QF2'], ['quartas', 'QF3'], ['quartas', 'QF4'],
+     ['semi', 'SF1'], ['semi', 'SF2'], ['final', '3LUGAR'], ['final', 'FINAL']].forEach(function (p) {
+      linhas.push([p[0], p[1], '', '', '', '', ''].join('\t'));
+    });
+
+    return linhas.join('\n');
+  }
+
+  function botaoCopiar(rotulo, texto) {
+    const btn = el('button', { class: 'btn btn-secundario', text: rotulo });
+    btn.addEventListener('click', function () {
+      navigator.clipboard.writeText(texto).then(function () {
+        btn.textContent = '✓ Copiado — cole na planilha';
         setTimeout(function () {
-          btn.textContent = 'Copiar linhas para a aba Grupos';
+          btn.textContent = rotulo;
         }, 2500);
       });
     });

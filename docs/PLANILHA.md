@@ -36,13 +36,15 @@ Regras das colunas:
   A ordem dos games segue a ordem dos jogadores na linha.
 - **data** — opcional, texto livre.
 
-Para gerar todas as linhas já prontas depois do sorteio:
+Você não precisa digitar nada disso à mão. Depois do sorteio, a própria página
+mostra dois botões — **"1. Copiar para a aba Grupos"** e **"2. Copiar para a aba Jogos"** —
+que geram todas as linhas prontas. Cole cada bloco na aba correspondente.
+
+Alternativa por terminal, se preferir:
 
 ```bash
 node scripts/gerar-planilha.mjs "04/08/2026 + Mega-Sena 2801"
 ```
-
-Copie cada bloco e cole na aba correspondente usando **Colar > Dividir texto em colunas**.
 
 ## 2. Liberar a leitura
 
