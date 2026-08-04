@@ -107,11 +107,11 @@
       }),
       window.Torneio.carregarAba(id, cfg.planilha.abaJogos),
     ]).then(function (res) {
+      // A planilha é a fonte da verdade: se a aba Grupos esvaziar, o estado
+      // anterior tem que cair junto, senão a página mostra grupos fantasma.
       const gp = gruposDaPlanilha(res[0]);
-      if (gp) {
-        estado.grupos = gp;
-        estado.origemGrupos = 'planilha';
-      }
+      estado.grupos = gp;
+      estado.origemGrupos = gp ? 'planilha' : null;
       const jogos = jogosDaPlanilha(res[1]);
       estado.jogosGrupo = jogos.grupo;
       estado.jogosMataMata = jogos.mataMata;
