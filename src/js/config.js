@@ -38,7 +38,7 @@ window.CONFIG = {
    * Deixe em branco para a página funcionar só com o sorteio.
    */
   planilha: {
-    id: '',
+    id: '11n66a2w61rJ4FgjgZkNLLy4vN6S1jO2RNewqhk44U1w',
     abaGrupos: 'Grupos',
     abaJogos: 'Jogos',
     // Recarrega os dados automaticamente a cada N segundos (0 = desligado).

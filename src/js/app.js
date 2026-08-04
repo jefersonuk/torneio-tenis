@@ -437,7 +437,11 @@
     estado.erro = null;
     return carregarPlanilha()
       .catch(function (e) {
-        estado.erro = 'Falha ao ler a planilha: ' + e.message;
+        // Sem compartilhamento público o navegador nem chega a ver o 401:
+        // o fetch morre no CORS e só sobra "Failed to fetch".
+        estado.erro = /failed to fetch|networkerror/i.test(e.message)
+          ? 'Planilha inacessível — compartilhe como "qualquer pessoa com o link: leitor"'
+          : 'Falha ao ler a planilha: ' + e.message;
       })
       .then(function () {
         recalcular();
